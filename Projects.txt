@@ -1,0 +1,284 @@
+Selenium Project
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+package Testing;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class PageObjects {
+
+		@FindBy(linkText="Home")WebElement hometab;
+		@FindBy(linkText="Football")WebElement footballtab;
+		@FindBy(linkText="Busketball")WebElement busketballtab;
+		@FindBy(linkText="Kriket")WebElement krikettab;
+		@FindBy(linkText="Cibersport")WebElement cibersport;
+
+	}
+
+
+
+package Testing;
+
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.support.PageFactory;
+
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.Assert; 
+
+public class CallingClass {
+
+
+	public static void main(String[] args) throws InterruptedException, IOException, RowsExceededException, WriteException {
+		 
+		WebDriver driver = WebDriverManager.chromedriver().create();
+	//Launching the application	   
+		   driver.get("https://test-nf.com/english.html");
+		   driver.manage().window().maximize();
+	//Verify the availability of each tab(Home, Cricket, Football, Basketball and Cyber Sports)//
+       PageObjects p = PageFactory.initElements(driver, PageObjects.class);
+       
+    boolean hometabavailabilty = p.hometab.isDisplayed();
+    Assert.assertEquals(hometabavailabilty, true);
+    boolean footballtabavailability = p.footballtab.isDisplayed();
+    Assert.assertEquals(footballtabavailability, true);
+    boolean busketballtabavailabilty = p.busketballtab.isDisplayed();
+    Assert.assertEquals(busketballtabavailabilty, true);
+    boolean krikettabavailability = p.krikettab.isDisplayed();
+    Assert.assertEquals(krikettabavailability, true);
+    boolean cibersportavailability = p.cibersport.isDisplayed();
+    Assert.assertEquals(cibersportavailability, true);
+    
+    //Verify URL of each tab contains the tab name
+    
+    p.hometab.click();
+    String hometaburl = driver.getCurrentUrl();
+    boolean hometabtextcontains = hometaburl.contains("home");
+    Assert.assertEquals(hometabtextcontains, false);
+    Thread.sleep(2000);
+    p.footballtab.click();
+    String footballtaburl = driver.getCurrentUrl();
+    boolean footballtabtextcontains = footballtaburl.contains("football");
+    Assert.assertEquals(footballtabtextcontains, true);
+    Thread.sleep(2000);
+    p.busketballtab.click();
+    String busketballtaburl = driver.getCurrentUrl();
+    boolean busketballtabtextcontains = busketballtaburl.contains("busketball");
+    Assert.assertEquals(busketballtabtextcontains, true);
+    Thread.sleep(2000);
+    p.krikettab.click();
+    String krikettaburl = driver.getCurrentUrl();
+    boolean krikettabtextcontains = krikettaburl.contains("kriket");
+    Assert.assertEquals(krikettabtextcontains, true);
+    Thread.sleep(2000);
+    p.cibersport.click();
+    String cibersporturl = driver.getCurrentUrl();
+    boolean cibersporttabtextcontains = cibersporturl.contains("cibersport");
+    Assert.assertEquals(cibersporttabtextcontains, true);
+    Thread.sleep(2000);
+    
+    //Store all the current URL in excel sheet.
+    
+
+ 
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    XSSFSheet sheet = workbook.createSheet("Sheet1");
+  
+    Row r0 = sheet.createRow(0);
+    Cell c0 = r0.createCell(0);
+    p.hometab.click();
+    c0.setCellValue(driver.getCurrentUrl());
+    Thread.sleep(2000);
+    
+    Row r1 = sheet.createRow(1);
+    Cell c1 = r1.createCell(0);
+    p.footballtab.click();
+    c1.setCellValue(driver.getCurrentUrl());
+    Thread.sleep(2000);
+    
+    Row r2 = sheet.createRow(2);
+    Cell c2 = r2.createCell(0);
+    p.busketballtab.click();
+    c2.setCellValue(driver.getCurrentUrl());
+    Thread.sleep(2000);
+    
+    Row r3 = sheet.createRow(3);
+    Cell c3 = r3.createCell(0);
+    p.krikettab.click();
+    c3.setCellValue(driver.getCurrentUrl());
+    Thread.sleep(2000);
+    
+    Row r4 = sheet.createRow(4);
+    Cell c4 = r4.createCell(0);
+    p.cibersport.click();
+    c4.setCellValue(driver.getCurrentUrl());
+    Thread.sleep(2000);
+    
+    File f= new File("C:\\Users\\91801\\Desktop\\Output.xlsx");
+    FileOutputStream fos = new FileOutputStream(f);
+    workbook.write(fos);
+    workbook.close();
+    
+    
+	}
+
+	}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Java Project
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+package assignment;
+import java.util.Scanner;
+abstract class Banking1{
+// Default constructor - To display a set Standard opening message.
+public Banking1(){
+System.out.println("******* Personal Banking Service ******");
+}
+// Account function - To print basic account holder details.
+public void Account(String Name,String UserName,int AccountNumber,int Balance) {
+System.out.println("The details of the account holder: \nAccountholder Name:" + Name
++"\nAccount Number: "+AccountNumber +"\nBalance: " +Balance+"Rs");
+}
+// Abstract function - To display custom messages during the time of implementation.
+public abstract void DisplayMessage();
+}
+class HDFCUser extends Banking1 {
+String Name;
+String BankName = "HDFC";
+int AccountNumber;
+int Balance;
+int DepositAmount;
+// Calling default constructor of base class.
+public HDFCUser() {
+super();
+}
+boolean validation_flag;
+// Validation function - to check if the user is from hdfc bank or not.
+public boolean validation(String BankName,String UserName,int AccountNumber,int Balance) {
+if (this.BankName.equals(BankName)) {
+Account(BankName,UserName,AccountNumber,Balance);
+validation_flag = true;
+System.out.println("\n");
+}
+else {
+System.out.println("After Validation, we found User is not from HDFC Bank.");
+validation_flag = false;
+}
+return validation_flag;
+}
+// Deposit function - to deposit money and update user balance
+public int Deposit(String Name,int AccountNumber,int Balance,int DepositAmount)
+{
+this.Balance = Balance;
+this.Balance += DepositAmount;
+System.out.println("Deposit Successful.Updated Balance = "+this.Balance +"Rs");
+return this.Balance;
+}
+// Withdrawal function - to withdraw money and update user balance
+public int Withdrawal(String Name,int AccountNumber,int Balance,int WithdrawalAmount)
+{
+this.Balance = Balance;
+if (Balance - WithdrawalAmount > 0 )
+{
+this.Balance -= WithdrawalAmount;
+System.out.println("Withdrawal Successful. Updated Balance = "+this.Balance+"Rs");
+}
+else {
+System.out.println("Insufficient balance.");
+}
+return (this.Balance);
+}
+//Display Custom HDFC message.
+@Override
+public void DisplayMessage() {
+System.out.println("Welcome to HDFC Bank Services.");
+}
+}
+class Banking {
+public static void main(String[] args)
+{
+HDFCUser obj = new HDFCUser();
+// Input user details
+Scanner sc = new Scanner(System.in);
+System.out.println("Enter User Name: ");
+String UserName = sc.nextLine();
+System.out.println("Enter Bank Name: ");
+String Bankname = sc.nextLine();
+System.out.println("Enter User Account Number: ");
+int AccountNumber = sc.nextInt();
+System.out.println("Enter Initial Balance: ");
+int InitialBalance = sc.nextInt();
+int UpdatedBalance = InitialBalance;
+boolean validation_flag;
+obj.DisplayMessage();
+validation_flag = obj.validation(Bankname,UserName,AccountNumber,InitialBalance);
+// Allowing Deposit & Withdrawal if user is from HDFC bank only.
+if(validation_flag == true) {
+System.out.println("Your account balance is "+InitialBalance +"Rs");
+System.out.println("If you want to deposit press 1 \nIf you want to withdraw
+press 2");
+int val = sc.nextInt();
+if(val==1) {
+System.out.println("Enter Deposit Amount: ");
+int DepositAmount = sc.nextInt();
+UpdatedBalance
+=obj.Deposit(UserName,AccountNumber,UpdatedBalance,DepositAmount);
+}
+else if(val==2){
+System.out.println("Enter Withdrawal Amount: ");
+int WithdrawAmount = sc.nextInt();
+UpdatedBalance =
+obj.Withdrawal(UserName,AccountNumber,InitialBalance,WithdrawAmount);
+}
+else {
+System.out.println("Wrong Option");
+}
+}
+}
+}
+Sample Input & Output –
+******* Personal Banking Service ******
+Enter User Name:
+Raga
+Enter Bank Name:
+HDFC
+Enter User Account Number:
+12345
+Enter Initial Balance:
+50000
+Welcome to HDFC Bank Services.
+The details of the account holder:
+Accountholder Name:HDFC
+Account Number: 12345
+Balance: 50000Rs
+Your account balance is 50000Rs
+If you want to deposit press 1
+If you want to withdraw press 2
+
+
+https://github.com/lahariraga/Fynd_Project.git
